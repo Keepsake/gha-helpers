@@ -2,11 +2,11 @@ name: Linux
 on: workflow_call
 jobs:
   BuildTestAndReportCoverage:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
-      CC: 'gcc-13'
-      CXX: 'g++-13'
-      GCOV: 'gcov-13'
+      CC: 'gcc-14'
+      CXX: 'g++-14'
+      GCOV: 'gcov-14'
       CXXFLAGS: '--coverage'
       LDFLAGS: '--coverage'
       VCPKG_BINARY_SOURCES: 'clear;x-gha,readwrite'
@@ -22,14 +22,14 @@ jobs:
             core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
 
       - name: Install missing toolchain tools
-        run: sudo apt-get install --yes clang-tidy-15 libc++-15-dev ninja-build
+        run: sudo apt-get install --yes clang-tidy-18 libc++-18-dev ninja-build
 
       - name: Install dependencies & Configure
         run: cmake
           -S . -B build -G Ninja
           -DCMAKE_BUILD_TYPE=Debug
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-          -DCMAKE_CXX_CLANG_TIDY=clang-tidy-15
+          -DCMAKE_CXX_CLANG_TIDY=clang-tidy-18
           -DCMAKE_TOOLCHAIN_FILE=${VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
