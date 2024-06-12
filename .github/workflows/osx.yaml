@@ -17,13 +17,15 @@ jobs:
             core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
 
       - name: Install missing toolchain tools
-        run: brew install ninja
+        run: |
+          brew install ninja vcpkg
+          git clone https://github.com/microsoft/vcpkg
 
       - name: Install dependencies & Configure
         run: cmake
           -S . -B build -G Ninja
           -DCMAKE_BUILD_TYPE=Debug
-          -DCMAKE_TOOLCHAIN_FILE=${VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake
+          -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
         run: cmake --build build
